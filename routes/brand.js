@@ -15,16 +15,13 @@ router.post("/subcat/brand/:subId", async (req, res) => {
 });
 
 router.get("/subcat/brand", async (req, res) => {
-    const Findbrands =  req.params.subId;
-    const brands = await Category.find( {Findbrands},(Findbrands)=>{
-        if(Findbrands != null){
-            try {
-                res.json(brands);
-            } catch (err) {
-                console.log(err);
-            }
-        }
-    } );
+
+    const brands = await Category.find( {Findbrands});
+    try {
+        res.json(brands);
+    } catch (err) {
+        console.log(err);
+    }
     
 });
 
