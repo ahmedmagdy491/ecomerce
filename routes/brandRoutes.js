@@ -1,10 +1,12 @@
 const router = require("express").Router();
-const Category = require("../models/categories");
+const Brand = require("../models/brand");
 
 router.post("/subcat/brand/:subId", async (req, res) => {
-	const NewBrand = await new Category({
-		subId: req.params.subId,
-		brandName: req.body.brandName,
+	const {subId} =  req.params;
+	const {brandName} = req.body
+	const NewBrand = await new Brand({
+		subId,
+		brandName
 	}).save();
 
 	try {
@@ -14,9 +16,9 @@ router.post("/subcat/brand/:subId", async (req, res) => {
 	}
 });
 
-router.get("/subcat/brand", async (req, res) => {
-
-    const brands = await Category.find( {Findbrands});
+router.get("/subcat/brand/:subId", async (req, res) => {
+	const {subId} = req.params;
+    const brands = await Brand.find( {subId});
     try {
         res.json(brands);
     } catch (err) {

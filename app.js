@@ -5,8 +5,9 @@ const mongoose = require("mongoose");
 const Category = require("./models/categories");
 const userRoutes = require("./routes/userRoutes");
 const cartRoutes = require("./routes/cartRoutes");
-const subcatRoutes = require("./routes/subCat");
-const brandRoutes = require("./routes/brand");
+const subcatRoutes = require("./routes/subCatRoutes");
+const brandRoutes = require("./routes/brandRoutes");
+const productRoutes = require("./routes/productRoutes");
 const ejs = require("ejs");
 
 const app = express();
@@ -17,15 +18,18 @@ app.use(express.json());
 app.set("view engine", "ejs");
 
 app.use(morgan("tiny"));
+
+//Routes
 app.use("/api", userRoutes);
 app.use("/api", cartRoutes);
 app.use("/api", subcatRoutes);
 app.use("/api", brandRoutes);
+app.use("/api", productRoutes);
 
 app.post("/", async (req, res) => {
-
+	const {catName} = req.body;
 	const addCategory = await new Category({
-		catName: req.body.catName,
+		catName
 	}).save();
 	try {
 		res.json(addCategory);
@@ -35,7 +39,7 @@ app.post("/", async (req, res) => {
 });
 
 app.get("/", async (req, res) => {
-	const categories = await Category.find({ parentId: null , subId:null });
+	const categories = await Category.find({ parentId: null , subId:null , brandId:null,type_of_subCat_Id:null});
 	try {
 		res.json(categories);
 	} catch (err) {
